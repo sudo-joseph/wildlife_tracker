@@ -6,7 +6,7 @@ DEBUG = True
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-##Old Database Settings
+# Old Database Settings:
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
