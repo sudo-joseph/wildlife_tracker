@@ -12,9 +12,8 @@ class Report(models.Model):
         on_delete=models.CASCADE,
     )
     type = models.CharField(max_length=30)
-    # I think type should be int type with type table
-    # latlon=models.CharField(max_length=100)
-    # address=models.CharField(max_length=1000)
+    long_position = models.DecimalField(max_digits=10, decimal_places=7)
+    lat_position = models.DecimalField(max_digits=10, decimal_places=7)
     text = models.CharField(max_length=160)
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
