@@ -25,18 +25,15 @@
 
 <body>
   <h1>Hello, map!</h1>
-  <div id="mapid"></div>
 
-  <script>
+<script>
 
 	var mymap = L.map('mapid').setView([37.8, -122.27], 10);
 
-<!-- Points are defined here: We could use templating to generate these as needed.  -->
-  var marker = L.marker([37.8044557, -122.2713563]).addTo(mymap);
-  marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-  var marker = L.marker([37.77288579, -122.45155334]).addTo(mymap);
-  marker.bindPopup("<b>Hello world!</b><br>I am annother popup.").openPopup();
-
+  {% for report in reports %}
+  var marker = L.marker([{{report.lat}}, {{report.lon}}]).addTo(mymap);
+  marker.bindPopup("<b>{{report.sometext}}</b><br>I am a popup.").openPopup();
+  {% endfor %}
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoianJlaWQ2NTUiLCJhIjoiY2szcXdpN3kyMDY5NjNubGR6NG40NXZ6dCJ9.w2GXxmIYTWfbbSXjzR9LTg', {
 		maxZoom: 18,
