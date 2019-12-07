@@ -15,3 +15,10 @@ def about(request):
 
     return render(request, 'pages/about.html', context)
 
+
+def map(request):
+    context = {
+
+
+    }
+    return render(request, 'pages/map.html', context)
