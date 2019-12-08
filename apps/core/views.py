@@ -42,3 +42,23 @@ def add_new(request):
     }
 
     return render(request, 'pages/add_report.html', context)
+
+
+def edit(request, id):
+    context = {
+    }
+
+    return render(request, 'pages/about.html', context)
+
+def list_view(request):
+    context = {
+    }
+
+    return render(request, 'pages/about.html', context)
+
+def delete(request, id):
+    context = {
+    }
+
+    return render(request, 'pages/about.html', context)
+
