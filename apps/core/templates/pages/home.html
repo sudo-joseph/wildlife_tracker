@@ -1,81 +1,63 @@
 {% extends "base.html" %}
 
 {% block title %}
-    My Site - Home
+My Site - Home
 {% endblock title %}
 
 {% load static %}
 
 {% block content %}
-<div >
+<div>
   <div class="row">
     <div class="col-sm-4">
-    <div class="row bs-example">
-          <form>{% csrf_token %}
-            <p>
+      <div class="row bs-example">
+        <form>{% csrf_token %}
+          <p>
             Search: <input type="text" name="search" id="search" placeholder="Search"></input></br>
-            </p>
-            Filters: <input type="checkbox" name="search" id="search" placeholder="Search">status: active</input>
-            <input type="checkbox" name="search" id="search" placeholder="Search">status: closed</input></br>
-            <button type="submit">Submit</button>
-          </form>
-    </div>
-    <form action="add-new/" method="POST">{% csrf_token %}
-      <button type="submit" class="btn btn-primary">Report a New Incident</button>
-    </form>
-    <div class="row bs-example">
+          </p>
+          Filters: <input type="checkbox" name="search" id="search" placeholder="Search">status: active</input>
+          <input type="checkbox" name="search" id="search" placeholder="Search">status: closed</input></br>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <form action="add-new/" method="POST">{% csrf_token %}
+        <button type="submit" class="btn btn-primary">Report a New Incident</button>
+      </form>
+      <div class="row bs-example">
         <div class="">
-            <img class="mr-3 media-image" src="{% static '/core/images/golden-eagle-face-and-beak.jpg' %}" alt="Sample photo">
-            <div class="media-body">
+          <img class="mr-3 media-image" src="{% static '/core/images/golden-eagle-face-and-beak.jpg' %}" alt="Sample photo">
+          <div class="media-body">
             <h4>Media Heading</h4>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam 
-              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt 
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
               explicabo.</p>
-            </div>
-            </div>
-          <hr> 
-            <div class="">
-            <img class="mr-3 media-image" src="{% static '/core/images/party-hat-frenchie.jpg' %}" alt="Sample photo">
-            <div class="media-body">
+          </div>
+        </div>
+        <hr>
+        <div class="">
+          <img class="mr-3 media-image" src="{% static '/core/images/party-hat-frenchie.jpg' %}" alt="Sample photo">
+          <div class="media-body">
             <h4>Media Heading</h4>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam 
-              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt 
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
               explicabo.</p>
-            </div>
-            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    <div class="col-sm-8">
-      <div id="mapid"></div>
+    <div class="col-8">
+
+      {% include "snippets/map.html" %}
     </div>
   </div>
 </div>
 
-  <script>
-
-    var mymap = L.map('mapid').setView([37.8, -122.27], 10);
-
-<!-- Points are defined here: We could use templating to generate these as needed.  -->
-  var marker = L.marker([37.8044557, -122.2713563]).addTo(mymap);
-  var marker = L.marker([37.77288579, -122.45155334]).addTo(mymap);
-
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoianJlaWQ2NTUiLCJhIjoiY2szcXdpN3kyMDY5NjNubGR6NG40NXZ6dCJ9.w2GXxmIYTWfbbSXjzR9LTg', {
-        maxZoom: 18,
-        attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/streets-v11'
-    }).addTo(mymap);
-
-</script>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 
 
 {% endblock content %}
-
-
