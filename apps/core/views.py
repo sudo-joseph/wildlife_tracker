@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django import forms 
-
+from django import forms
+import json
+import time
 
 class IncidentReport(forms.Form):
     reporter = forms.CharField(max_length=20)
@@ -19,9 +20,13 @@ def home(request):
 
     context = {
         'example_context_variable': 'Change me.',
+        'vlat': 37.8,
+        'vlon': -122.27,
+        'view': 12
     }
 
     return render(request, 'pages/home.html', context)
+
 
 def about(request):
     context = {
@@ -29,20 +34,38 @@ def about(request):
 
     return render(request, 'pages/about.html', context)
 
+
 def add_new(request):
-    if request.method == 'POST':
-        form = IncidentReport(request.POST)
-        if form.is_valid():
-            return HttpResponse("<h1>Thank you for the report!</h1>")
+    if 'lat' not in request.session.keys():
+        time.sleep(1)
+        return add_new(request)
     else:
-        form = IncidentReport()
+        print("Lat: ", request.session['lat'], "Lon: ", request.session['lon'])
+        reports = [{'lat': request.session['lat'],
+                    'lon': request.session['lon'],
+                    'sometext': '',
+                    }]
+        if request.method == 'POST':
+            form = IncidentReport(request.POST)
+            if form.is_valid():
+                return HttpResponse("<h1>Thank you for the report!</h1>")
 
-    context = {
-        'form': form,
-    }
+        else:
+            form = IncidentReport()
+            context = {'form': form,
+                       'reports': reports,
+                       'vlat': request.session['lat'],
+                       'vlon': request.session['lon'],
+                       'view': '18',
+                       }
+            return render(request, 'pages/add_report.html', context)
 
-    return render(request, 'pages/add_report.html', context)
 
+def log_location(request):
+    loc = json.loads(request.body)
+    request.session['lat'] = loc['lat']
+    request.session['lon'] = loc['lon']
+    return HttpResponse(request)
 
 def edit(request, id):
     context = {
@@ -61,4 +84,3 @@ def delete(request, id):
     }
 
     return render(request, 'pages/about.html', context)
-

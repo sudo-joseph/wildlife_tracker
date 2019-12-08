@@ -11,18 +11,10 @@ My Site - Home
   <div class="row">
     <div class="col-sm-4">
       <div class="row bs-example">
-        <form>{% csrf_token %}
-          <p>
-            Search: <input type="text" name="search" id="search" placeholder="Search"></input></br>
-          </p>
-          Filters: <input type="checkbox" name="search" id="search" placeholder="Search">status: active</input>
-          <input type="checkbox" name="search" id="search" placeholder="Search">status: closed</input></br>
-          <button type="submit">Submit</button>
-        </form>
+        <button class="btn btn-primary"
+        onclick="getLocation();window.location.href=/add-new/">New Report</button>
       </div>
-      <form action="add-new/" method="POST">{% csrf_token %}
-        <button type="submit" class="btn btn-primary">Report a New Incident</button>
-      </form>
+
       <div class="row bs-example">
         <div class="">
           <img class="mr-3 media-image" src="{% static '/core/images/golden-eagle-face-and-beak.jpg' %}" alt="Sample photo">

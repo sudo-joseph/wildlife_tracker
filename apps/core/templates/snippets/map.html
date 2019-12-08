@@ -18,7 +18,7 @@
                     'lon': position.coords.longitude};
 
       var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "/report/", true);
+      xhttp.open("POST", "/log_location/", true);
       xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send(JSON.stringify(latlon));
@@ -27,12 +27,13 @@
   </script>
   <script>
     // Define Map:
-  	var mymap = L.map('mapid').setView([37.8, -122.27], 10);
-
+    var mymap = L.map('mapid').setView([{{vlat}}, {{vlon}}], {{view}})
     // Define Map Points:
     {% for report in reports %}
     var marker = L.marker([{{report.lat}}, {{report.lon}}]).addTo(mymap);
-    marker.bindPopup("<b>{{report.sometext}}</b><br>I am a popup.").openPopup();
+    {% if report.sometext != '' %}
+      marker.bindPopup("<b>{{report.sometext}}</b><br>I am a popup.").openPopup();
+    {% endif %}
     {% endfor %}
 
     // Define base tiles. (Mapbox)
