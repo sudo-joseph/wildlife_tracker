@@ -7,6 +7,12 @@ a:hover {
   color: #2c7403;
 }
 
+a:hover {
+    color: #4cc505;
+}
+.nav-link-color{
+    color: #2c7403;
+}
 .navbar {
   background: linear-gradient(135deg, #f5a04c 0%, #fdf1d6 100%);
 }
@@ -41,3 +47,18 @@ a:hover {
   height: 100%;
   width: 100%;
 }
+
+.about-image {
+    max-width: 220px;
+}
+
+.bs-example  {
+	border: 2px solid white;
+	background: #f5f5f5;
+	/* text-align: center; */
+	padding-top: 8px;
+	padding-bottom: 8px;
+	}
+    .media-image {
+        height: 150px;
+    }
