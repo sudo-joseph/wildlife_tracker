@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "41407c14c35ab8b10eccedcd5e7c5edee4fa8e4c0ed6a12c723b955b002bcf38"
+            "sha256": "c2a98ac29f81bc621883a444a1a67f2f03ba49c3333fdafd501d7842ad61fd32"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -66,13 +66,6 @@
             ],
             "index": "pypi",
             "version": "==20.0.4"
-        },
-        "pipfile": {
-            "hashes": [
-                "sha256:f7d9f15de8b660986557eb3cc5391aa1a16207ac41bc378d03f414762d36c984"
-            ],
-            "index": "pypi",
-            "version": "==0.0.2"
         },
         "psycopg2": {
             "hashes": [
@@ -150,13 +143,6 @@
                 "sha256:7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873"
             ],
             "version": "==0.3.0"
-        },
-        "toml": {
-            "hashes": [
-                "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c",
-                "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"
-            ],
-            "version": "==0.10.0"
         },
         "whitenoise": {
             "hashes": [
@@ -237,13 +223,6 @@
             ],
             "version": "==0.6.1"
         },
-        "pipfile": {
-            "hashes": [
-                "sha256:f7d9f15de8b660986557eb3cc5391aa1a16207ac41bc378d03f414762d36c984"
-            ],
-            "index": "pypi",
-            "version": "==0.0.2"
-        },
         "pylint": {
             "hashes": [
                 "sha256:3db5468ad013380e987410a8d6956226963aed94ecb5f9d3a28acca6d9ac36cd",
@@ -272,13 +251,6 @@
                 "sha256:7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873"
             ],
             "version": "==0.3.0"
-        },
-        "toml": {
-            "hashes": [
-                "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c",
-                "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"
-            ],
-            "version": "==0.10.0"
         },
         "typed-ast": {
             "hashes": [
