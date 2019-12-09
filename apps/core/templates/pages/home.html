@@ -15,18 +15,34 @@ sfbaWildlifeTracker - Home
         onclick="getLocation();window.location.href=/add-new/">New Report</button>
       </div>
 
+
+
+
       <div class="row bs-example">
-        <div class="">
+        <h3>Incident Reports</h3>
+        {% for report in reports %}
+         <div>
+           {% if report.image %}
+            <img class="d-block w-100" src="{{ report.image.url }}" alt="{{ report.type }}">
+           {% endif %}
+            <div>{{ report.type }}</div>
+            <div> {{ report.created }} </div>
+            <div> {{ report.text }}</div>
+         </div>  
+        {% endfor %}
+
+
+        <div>
           <img class="mr-3 media-image" src="{% static 'images/golden-eagle-face-and-beak.jpg' %}" alt="Sample photo">
           <div class="media-body">
-            <h4>Media Heading</h4>
+            <h5>Media Heading</h5>
             <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
               rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
               explicabo.</p>
           </div>
         </div>
         <hr>
-        <div class="">
+        <div>
           <img class="mr-3 media-image" src="{% static 'images/party-hat-frenchie.jpg' %}" alt="Sample photo">
           <div class="media-body">
             <h4>Media Heading</h4>
