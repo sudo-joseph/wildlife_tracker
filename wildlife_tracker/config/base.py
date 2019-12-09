@@ -33,6 +33,7 @@ LOCAL_APPS = [
 
 THIRD_PARTY_APPS = [
     'bootstrap4',
+    'crispy_forms',
 ]
 
 DJANGO_APPS = [
@@ -123,3 +124,6 @@ LOGIN_URL = '/account/login/'
 
 # Specify we are using a custom user model
 AUTH_USER_MODEL = 'accounts.User'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
