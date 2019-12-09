@@ -30,9 +30,9 @@
     var mymap = L.map('mapid').setView([{{vlat}}, {{vlon}}], {{view}})
     // Define Map Points:
     {% for report in reports %}
-    var marker = L.marker([{{report.lat}}, {{report.lon}}],{draggable:{{drag}}}).addTo(mymap);
-    {% if report.sometext != '' %}
-      marker.bindPopup("<b>{{report.sometext}}</b><br>I am a popup.");
+    var marker = L.marker([{{report.lat_position}}, {{report.lon_position}}],{draggable:{{drag}}}).addTo(mymap);
+    {% if report.type != '' %}
+      marker.bindPopup("<b>{{ report.type }}</b>");
     {% endif %}
     {% endfor %}
 
