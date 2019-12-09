@@ -14,12 +14,12 @@ class ReportForm(forms.ModelForm):
 def home(request):
     reports = Report.objects.all().order_by('-created')
 
-    latlon_oakland = { 'lat': 37.8, 'lon': -122.27, } 
+    loc_oakland = { 'lat_position': 37.8, 'lon_position': -122.27, } 
     map_zoom_level = 10
 
     context = {'example_context_variable': 'Change me.',
-               'vlat': latlon_oakland['lat'],
-               'vlon': latlon_oakland['lon'],
+               'vlat': loc_oakland['lat_position'],
+               'vlon': loc_oakland['lon_position'],
                'view': map_zoom_level,
                'drag': 'false',
                'reports': reports,
@@ -41,8 +41,8 @@ def add_new(request):
         return render(request, 'pages/login_required.html', context)
 
     if 'lat' not in request.session.keys():
-        time.sleep(1)
-        return add_new(request)
+            time.sleep(1)
+            return add_new(request)
     else:
         if request.method == 'POST':
             print(request.FILES)
@@ -55,21 +55,21 @@ def add_new(request):
 
         else:
             print("Lat: ", request.session['lat'],
-                  "Lon: ", request.session['lon'])
+                    "Lon: ", request.session['lon'])
             reports = [{'lat': request.session['lat'],
                         'lon': request.session['lon'],
-                        'sometext': '',
+                        'text': '',
                         }]
             form = ReportForm(initial={'lat_position': request.session['lat'],
-                                   'lon_position': request.session['lon']
-                                   })
+                                    'lon_position': request.session['lon']
+                                    })
             context = {'form': form,
-                       'reports': reports,
-                       'vlat': request.session['lat'],
-                       'vlon': request.session['lon'],
-                       'view': '18',
-                       'drag': 'true'
-                       }
+                        'reports': reports,
+                        'vlat': request.session['lat'],
+                        'vlon': request.session['lon'],
+                        'view': '18',
+                        'drag': 'true'
+                        }
             return render(request, 'pages/add_report.html', context)
 
 def log_location(request):
