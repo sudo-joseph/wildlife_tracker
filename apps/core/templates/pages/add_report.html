@@ -9,10 +9,11 @@
 
 {% block content %}
 <h1>Add report</h1>
-<form>{{ crsf_token }}
+<h2>Confirm Location:</h2>
+{% include "snippets/map.html" %}
+<form method="post" action=".">
+        {% csrf_token %}
         {{ form.as_p }}
 <button type="submit">Submit</button>
 </form>
 {% endblock content %}
-
-
