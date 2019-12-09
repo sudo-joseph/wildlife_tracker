@@ -11,13 +11,12 @@ class Report(forms.ModelForm):
         fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
 
 def home(request):
-    context = {
-        'example_context_variable': 'Change me.',
-        'vlat': 37.8,
-        'vlon': -122.27,
-        'view': 12,
-        'drag': False,
-    }
+    context = {'example_context_variable': 'Change me.',
+               'vlat': 37.8,
+               'vlon': -122.27,
+               'view': 12,
+               'drag': 'false',
+               }
 
     return render(request, 'pages/home.html', context)
 
@@ -58,7 +57,7 @@ def add_new(request):
                        'vlat': request.session['lat'],
                        'vlon': request.session['lon'],
                        'view': '18',
-                       'drag': True,
+                       'drag': 'true'
                        }
             return render(request, 'pages/add_report.html', context)
 

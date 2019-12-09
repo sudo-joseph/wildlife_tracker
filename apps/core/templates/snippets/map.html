@@ -30,7 +30,7 @@
     var mymap = L.map('mapid').setView([{{vlat}}, {{vlon}}], {{view}})
     // Define Map Points:
     {% for report in reports %}
-    var marker = L.marker([{{report.lat}}, {{report.lon}}],{draggable:'true'}).addTo(mymap);
+    var marker = L.marker([{{report.lat}}, {{report.lon}}],{draggable:{{drag}}}).addTo(mymap);
     {% if report.sometext != '' %}
       marker.bindPopup("<b>{{report.sometext}}</b><br>I am a popup.");
     {% endif %}
@@ -45,13 +45,13 @@
   		id: 'mapbox/streets-v11'
   	}).addTo(mymap);
 
-    function blah(e) {
+    function updateform(e) {
         var latlng = e.target.getLatLng();
         document.getElementById("id_lat_position").value = strip(latlng.lat);
         document.getElementById("id_lon_position").value = strip(latlng.lng);
     }
 
-    marker.on('dragend', blah);
+    marker.on('dragend', updateform);
     function strip(x) {
       return Number.parseFloat(x).toFixed(7);
     }
