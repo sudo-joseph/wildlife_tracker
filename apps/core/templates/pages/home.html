@@ -23,34 +23,16 @@ sfbaWildlifeTracker - Home
         {% for report in reports %}
          <div>
            {% if report.image %}
-            <img class="d-block w-100" src="{{ report.image.url }}" alt="{{ report.type }}">
+            <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.type }}">
+           {% else %}
+            <img class="mr-3 media-image" src="{% static 'images/no-picture.png' %}" alt="(No image available)">
            {% endif %}
-            <div>{{ report.type }}</div>
-            <div> {{ report.created }} </div>
-            <div> {{ report.text }}</div>
+            <div><strong>{{ report.type }}</strong></div>
+            <div><small>{{ report.created }}</small> </div>
+            <div><p>{{ report.text }}</p></div>
          </div>  
         {% endfor %}
 
-
-        <div>
-          <img class="mr-3 media-image" src="{% static 'images/golden-eagle-face-and-beak.jpg' %}" alt="Sample photo">
-          <div class="media-body">
-            <h5>Media Heading</h5>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-              explicabo.</p>
-          </div>
-        </div>
-        <hr>
-        <div>
-          <img class="mr-3 media-image" src="{% static 'images/party-hat-frenchie.jpg' %}" alt="Sample photo">
-          <div class="media-body">
-            <h4>Media Heading</h4>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-              rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-              explicabo.</p>
-          </div>
-        </div>
       </div>
     </div>
     <div class="col-8">
