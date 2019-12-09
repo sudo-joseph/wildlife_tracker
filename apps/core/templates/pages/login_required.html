@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+sfbaWildlifeTracker - Login Required
+{% endblock title %}
+
+{% load static %}
+
+{% block content %}
+<h2>Login Required</h2>
+<p>Currently we require a user login to report an incident.</p>
+<p>If you do not have a user account yet, please sign up first.</p>
+      <h3>
+      <a href="{% url 'login' %}">Log In</a>, 
+      <a href="{% url 'signup' %}">Sign Up</a>, or, 
+      <a href="{% url 'home' %}">Back to Home</a>
+      </h3>
+{% endblock content %}

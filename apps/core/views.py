@@ -29,6 +29,10 @@ def about(request):
 
 
 def add_new(request):
+    if  request.user.is_anonymous:
+        context = {}
+        return render(request, 'pages/login_required.html', context)
+
     if 'lat' not in request.session.keys():
         time.sleep(1)
         return add_new(request)
