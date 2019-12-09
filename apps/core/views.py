@@ -5,7 +5,8 @@ from .models import Report
 import json
 import time
 
-class Report(forms.ModelForm):
+
+class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
@@ -29,13 +30,17 @@ def about(request):
 
 
 def add_new(request):
+    if  request.user.is_anonymous:
+        context = {}
+        return render(request, 'pages/login_required.html', context)
+
     if 'lat' not in request.session.keys():
         time.sleep(1)
         return add_new(request)
     else:
         if request.method == 'POST':
             print('im getting here')
-            form = Report(request.POST)
+            form = ReportForm(request.POST)
             if form.is_valid():
                 report = form.save(commit=False)
                 report.user = request.user
@@ -49,7 +54,7 @@ def add_new(request):
                         'lon': request.session['lon'],
                         'sometext': '',
                         }]
-            form = Report(initial={'lat_position': request.session['lat'],
+            form = ReportForm(initial={'lat_position': request.session['lat'],
                                    'lon_position': request.session['lon']
                                    })
             context = {'form': form,
