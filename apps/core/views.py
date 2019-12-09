@@ -12,11 +12,17 @@ class ReportForm(forms.ModelForm):
         fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
 
 def home(request):
+    reports = Report.objects.all().order_by('-created')
+
+    latlon_oakland = { 'lat': 37.8, 'lon': -122.27, } 
+    map_zoom_level = 10
+
     context = {'example_context_variable': 'Change me.',
-               'vlat': 37.8,
-               'vlon': -122.27,
-               'view': 12,
+               'vlat': latlon_oakland['lat'],
+               'vlon': latlon_oakland['lon'],
+               'view': map_zoom_level,
                'drag': 'false',
+               'reports': reports,
                }
 
     return render(request, 'pages/home.html', context)
@@ -39,8 +45,8 @@ def add_new(request):
         return add_new(request)
     else:
         if request.method == 'POST':
-            print('im getting here')
-            form = ReportForm(request.POST)
+            print(request.FILES)
+            form = ReportForm(request.POST, request.FILES)
             if form.is_valid():
                 report = form.save(commit=False)
                 report.user = request.user
