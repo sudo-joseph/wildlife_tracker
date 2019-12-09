@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django import forms
+from .models import Report
 import json
 import time
 
@@ -8,13 +9,16 @@ class IncidentReport(forms.Form):
     reporter = forms.CharField(max_length=20)
     email = forms.CharField(max_length=20)
     phone = forms.CharField(max_length=20)
-
     location_address = forms.CharField(max_length=120)
     date_incident = forms.CharField(max_length=20)
     date_reported = forms.CharField(max_length=20)
     date_update = forms.CharField(max_length=20)
     description = forms.CharField(max_length=20)
 
+class Report(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
 
 def home(request):
 
@@ -40,18 +44,25 @@ def add_new(request):
         time.sleep(1)
         return add_new(request)
     else:
-        print("Lat: ", request.session['lat'], "Lon: ", request.session['lon'])
-        reports = [{'lat': request.session['lat'],
-                    'lon': request.session['lon'],
-                    'sometext': '',
-                    }]
         if request.method == 'POST':
-            form = IncidentReport(request.POST)
+            print('im getting here')
+            form = Report(request.POST)
             if form.is_valid():
-                return HttpResponse("<h1>Thank you for the report!</h1>")
+                report = form.save(commit=False)
+                report.user = request.user
+                report.save()
+                return redirect('/')
 
         else:
-            form = IncidentReport()
+            print("Lat: ", request.session['lat'],
+                  "Lon: ", request.session['lon'])
+            reports = [{'lat': request.session['lat'],
+                        'lon': request.session['lon'],
+                        'sometext': '',
+                        }]
+            form = Report(initial={'lat_position': request.session['lat'],
+                                   'lon_position': request.session['lon']
+                                   })
             context = {'form': form,
                        'reports': reports,
                        'vlat': request.session['lat'],
@@ -59,7 +70,6 @@ def add_new(request):
                        'view': '18',
                        }
             return render(request, 'pages/add_report.html', context)
-
 
 def log_location(request):
     loc = json.loads(request.body)
