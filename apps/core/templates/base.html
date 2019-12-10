@@ -41,32 +41,32 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-color" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link nav-link-color" href="{% url 'core:home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-color" href="{% url 'about' %}">About</a>
+                    <a class="nav-link nav-link-color" href="{% url 'core:about' %}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-color" href="{% url 'view_all_users' %}">Users</a>
+                    <a class="nav-link nav-link-color" href="{% url 'account:view_all_users' %}">Users</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link nav-link-color" href="{% url 'logout' %}" >Sign Out</a>
+                        <a class="nav-link nav-link-color" href="{% url 'account:logout' %}" >Sign Out</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-color" href="{% url 'view_profile' request.user %}" >
+                        <a class="nav-link nav-link-color" href="{% url 'account:view_profile' request.user %}" >
                             {{ request.user }}
                             <img src="{{ user.gravatar }}" class="navbar-avatar" />
                         </a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'login' %}">Log In</a>
+                        <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:login' %}">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'signup' %}">Sign up</a>
+                        <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:signup' %}">Sign up</a>
                     </li>
                 {% endif %}
             </ul>
