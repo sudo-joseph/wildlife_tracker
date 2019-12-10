@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 from apps.accounts.forms import UserEditForm, SignupForm
 from apps.accounts.models import User
+from apps.core.models import Report
+
 
 def log_in(request):
     if request.method == 'POST':
@@ -64,9 +66,12 @@ def view_profile(request, username):
     else:
         is_viewing_self = False
 
+    reports_by_user = Report.objects.filter(user=user).order_by('-created')
+
     context = {
         'user': user,
         'is_viewing_self': is_viewing_self,
+        'reports': reports_by_user,
     }
     return render(request, 'accounts/profile_page.html', context)
 
