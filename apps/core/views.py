@@ -10,6 +10,7 @@ class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
+        widgets = { 'text': forms.Textarea() }
 
 def home(request):
     reports = Report.objects.all().order_by('-created')
@@ -56,8 +57,8 @@ def add_new(request):
         else:
             print("Lat: ", request.session['lat'],
                     "Lon: ", request.session['lon'])
-            reports = [{'lat': request.session['lat'],
-                        'lon': request.session['lon'],
+            reports = [{'lat_position': request.session['lat'],
+                        'lon_position': request.session['lon'],
                         'text': '',
                         }]
             form = ReportForm(initial={'lat_position': request.session['lat'],
