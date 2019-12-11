@@ -1,0 +1,60 @@
+  <div id="mapid"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    //Get user location
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(postPosition);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+        // TODO: replace this with code to call alternative location reporting method.
+      }
+    }
+
+    //Send location to server
+    function postPosition(position) {
+      var latlon = {'lat': position.coords.latitude,
+                    'lon': position.coords.longitude};
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "/log_location/", true);
+      xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhttp.send(JSON.stringify(latlon));
+    }
+
+  </script>
+  <script>
+    // Define Map:
+    var mymap = L.map('mapid').setView([{{vlat}}, {{vlon}}], {{view}})
+    // Define Map Points:
+    {% for report in reports %}
+    var marker = L.marker([{{report.lat_position}}, {{report.lon_position}}],{draggable:{{drag}}}).addTo(mymap);
+    {% if report.type != '' %}
+      marker.bindPopup("<b>{{ report.type }}</b>");
+    {% endif %}
+    {% endfor %}
+
+    // Define base tiles. (Mapbox)
+  	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoianJlaWQ2NTUiLCJhIjoiY2szcXdpN3kyMDY5NjNubGR6NG40NXZ6dCJ9.w2GXxmIYTWfbbSXjzR9LTg', {
+  		maxZoom: 18,
+  		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+  			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+  			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  		id: 'mapbox/streets-v11'
+  	}).addTo(mymap);
+
+    function updateform(e) {
+        var latlng = e.target.getLatLng();
+        document.getElementById("id_lat_position").value = strip(latlng.lat);
+        document.getElementById("id_lon_position").value = strip(latlng.lng);
+    }
+
+    marker.on('dragend', updateform);
+    function strip(x) {
+      return Number.parseFloat(x).toFixed(7);
+    }
+
+
+  </script>
