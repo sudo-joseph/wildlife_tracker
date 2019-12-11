@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django import forms
@@ -40,6 +40,7 @@ def about(request):
 
 
 def add_new(request):
+    """Add new report to database."""
     if request.user.is_anonymous:
         context = {}
         return render(request, 'pages/login_required.html', context)
@@ -76,11 +77,14 @@ def add_new(request):
 
 
 def log_location(request):
-    loc = json.loads(request.body)
-    request.session['lat'] = round(loc['lat'], 7)
-    request.session['lon'] = round(loc['lon'], 7)
-    return HttpResponse(request)
-
+    """Log User Location from Browser Geolocation in Session."""
+    if request.method == "POST":
+        loc = json.loads(request.body)
+        request.session['lat'] = round(loc['lat'], 7)
+        request.session['lon'] = round(loc['lon'], 7)
+        return HttpResponse(request)
+    else:
+        return redirect('/')
 
 @login_required
 def edit(request, id):
@@ -121,3 +125,13 @@ def delete(request, id):
     }
 
     return render(request, 'pages/about.html', context)
+
+
+def address(request):
+    """Return lat/lon for input address via json fetch."""
+    if request.method == "POST":
+        print(request.POST)
+        loc_oakland = {'lat_position': 37.8, 'lon_position': -122.27, }
+        return JsonResponse(loc_oakland)
+    else:
+        return redirect('/')
