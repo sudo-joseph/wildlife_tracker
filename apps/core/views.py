@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django import forms
 from .models import Report
 import json
@@ -46,7 +48,6 @@ def add_new(request):
             return add_new(request)
     else:
         if request.method == 'POST':
-            print(request.FILES)
             form = ReportForm(request.POST, request.FILES)
             if form.is_valid():
                 report = form.save(commit=False)
@@ -79,11 +80,29 @@ def log_location(request):
     request.session['lon'] = loc['lon']
     return HttpResponse(request)
 
+@login_required
 def edit(request, id):
+    report = Report.objects.get(id=id)
+
+    if request.method == "POST":
+        if report.user == request.user:
+            form = ReportForm(request.POST, request.FILES, instance=report)
+            if form.is_valid():
+                form.save()
+                return redirect('/account/users/' + request.user.username)
+            else:
+                messages.error(request, 'Form Validation Error at the server')
+                return redirect('/')
+        else:
+            messages.error(request, 'Could not confirm if this record was filed by the current user.')
+            return redirect('/')
+
+    form = ReportForm(instance=report)
     context = {
+        'form': form,
     }
 
-    return render(request, 'pages/about.html', context)
+    return render(request, 'pages/add_report.html', context)
 
 def list_view(request):
     context = {
@@ -91,6 +110,7 @@ def list_view(request):
 
     return render(request, 'pages/about.html', context)
 
+@login_required
 def delete(request, id):
     context = {
     }

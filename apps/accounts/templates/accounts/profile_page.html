@@ -4,6 +4,7 @@
     @{{ user.username }}
 {% endblock title %}
 
+{% load static %}
 {% block content %}
 <div class="row">
     <div class="col-md-3">
@@ -14,12 +15,43 @@
         <p>{{ user.bio }}</p>
 
         {% if is_viewing_self %}
-            <a href="{% url "edit_profile" %}">Edit</a>
+            <a href="{% url 'account:edit_profile' %}">Edit</a>
         {% endif %}
     </div>
 
     <div class="col-md-9">
-        stuff could go here...
+        <h1>User Report</h1>
+        <div class="listview">
+            {% for report in reports %}
+            <div class="row main">
+            <div class="media">
+                    {% if is_viewing_self %}
+                    <div>
+                    <form action="{% url 'core:edit' report.id %}" method="GET">
+                        <button type="submit" class="btn btn-info" >Edit</button>
+                    </form>
+                    <form action="#">
+                    <button type="button" class="btn btn-danger">Delete</button>
+                    </form>
+                    </div>
+                    {% endif %}
+                {% if report.image %}
+                <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.type }}">
+                {% else %}
+                <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+                {% endif %}
+                <div class="media-body">
+                    <div>
+                    <h4>{{ report.type }}</h4>
+                    </div>
+                    <h5>{{ report.created }}</h5>
+                    <p>{{ report.text }}</p>
+                </div>
+            </div>
+            </div>
+            {% if loop.last == False %}  <hr/> {% endif %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -7,13 +7,15 @@ from django.contrib.auth.decorators import login_required
 
 from apps.accounts.forms import UserEditForm, SignupForm
 from apps.accounts.models import User
+from apps.core.models import Report
+
 
 def log_in(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('home')
+            return redirect('core:home')
     else:
         form = AuthenticationForm()
 
@@ -32,7 +34,7 @@ def sign_up(request):
             # Log-in the user right away
             messages.success(request, 'Account created successfully. Welcome!')
             login(request, user)
-            return redirect('home')
+            return redirect('core:home')
     else:
         form = SignupForm()
 
@@ -45,7 +47,7 @@ def sign_up(request):
 def logout_view(request):
     logout(request)
     messages.success(request, 'Logged out.')
-    return redirect('home')
+    return redirect('core:home')
 
 
 def view_all_users(request):
@@ -64,9 +66,12 @@ def view_profile(request, username):
     else:
         is_viewing_self = False
 
+    reports_by_user = Report.objects.filter(user=user).order_by('-created')
+
     context = {
         'user': user,
         'is_viewing_self': is_viewing_self,
+        'reports': reports_by_user,
     }
     return render(request, 'accounts/profile_page.html', context)
 
@@ -76,7 +81,7 @@ def edit_profile(request):
         form = UserEditForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('core:home')
     else:
         form = UserEditForm(instance=request.user)
 
