@@ -77,8 +77,8 @@ def add_new(request):
 
 def log_location(request):
     loc = json.loads(request.body)
-    request.session['lat'] = round(loc['lat'],7)
-    request.session['lon'] = round(loc['lon'],7)
+    request.session['lat'] = round(loc['lat'], 7)
+    request.session['lon'] = round(loc['lon'], 7)
     return HttpResponse(request)
 
 
@@ -96,7 +96,8 @@ def edit(request, id):
                 messages.error(request, 'Form Validation Error at the server')
                 return redirect('/')
         else:
-            messages.error(request, 'Could not confirm if this record was filed by the current user.')
+            messages.error(request, 'Could not confirm if this record was filed \
+                                     by the current user.')
             return redirect('/')
 
     form = ReportForm(instance=report)
