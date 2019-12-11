@@ -5,7 +5,8 @@ from django.contrib import messages
 from django import forms
 from .models import Report
 import json
-import time
+from geopy.geocoders import MapBox
+import os
 
 
 class ReportForm(forms.ModelForm):
@@ -130,8 +131,14 @@ def delete(request, id):
 def address(request):
     """Return lat/lon for input address via json fetch."""
     if request.method == "POST":
-        print(request.POST)
-        loc_oakland = {'lat_position': 37.8, 'lon_position': -122.27, }
-        return JsonResponse(loc_oakland)
+        print(request.body.decode('utf-8'))
+        address = '{address}, {city}, {state} {zip}'.format(
+            **json.loads(request.body.decode('utf-8')))
+        geolocator = MapBox(api_key=os.getenv('MB_TOKEN'))
+        location = geolocator.geocode(address)
+        new_loc = {'lat_position': location.latitude,
+                   'lon_position': location.longitude,
+                   }
+        return JsonResponse(new_loc)
     else:
         return redirect('/')
