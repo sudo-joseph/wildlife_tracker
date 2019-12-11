@@ -10,6 +10,7 @@ django-heroku = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 django-crispy-forms = "*"
+geopy = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"

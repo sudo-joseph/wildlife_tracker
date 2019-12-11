@@ -1,23 +1,25 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django import forms
 from .models import Report
 import json
-import time
+from geopy.geocoders import MapBox
+import os
 
 
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
-        widgets = { 'text': forms.Textarea() }
+        widgets = {'text': forms.Textarea()}
+
 
 def home(request):
     reports = Report.objects.all().order_by('-created')
 
-    loc_oakland = { 'lat_position': 37.8, 'lon_position': -122.27, } 
+    loc_oakland = {'lat_position': 37.8, 'lon_position': -122.27, }
     map_zoom_level = 10
 
     context = {'example_context_variable': 'Change me.',
@@ -39,46 +41,51 @@ def about(request):
 
 
 def add_new(request):
-    if  request.user.is_anonymous:
+    """Add new report to database."""
+    if request.user.is_anonymous:
         context = {}
         return render(request, 'pages/login_required.html', context)
 
     if 'lat' not in request.session.keys():
-            time.sleep(1)
-            return add_new(request)
-    else:
-        if request.method == 'POST':
-            form = ReportForm(request.POST, request.FILES)
-            if form.is_valid():
-                report = form.save(commit=False)
-                report.user = request.user
-                report.save()
-                return redirect('/')
+        loc_oakland = {'lat_position': 37.8, 'lon_position': -122.27, }
+        request.session['lat'] = loc_oakland['lat_position']
+        request.session['lon'] = loc_oakland['lon_position']
 
-        else:
-            print("Lat: ", request.session['lat'],
-                    "Lon: ", request.session['lon'])
-            reports = [{'lat_position': request.session['lat'],
-                        'lon_position': request.session['lon'],
-                        'text': '',
-                        }]
-            form = ReportForm(initial={'lat_position': request.session['lat'],
-                                    'lon_position': request.session['lon']
-                                    })
-            context = {'form': form,
-                        'reports': reports,
-                        'vlat': request.session['lat'],
-                        'vlon': request.session['lon'],
-                        'view': '18',
-                        'drag': 'true'
-                        }
-            return render(request, 'pages/add_report.html', context)
+    if request.method == 'POST':
+        form = ReportForm(request.POST, request.FILES)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.user = request.user
+            report.save()
+            return redirect('/')
+
+    else:
+        reports = [{'lat_position': request.session['lat'],
+                    'lon_position': request.session['lon'],
+                    'text': '',
+                    }]
+        form = ReportForm(initial={'lat_position': request.session['lat'],
+                                   'lon_position': request.session['lon']
+                                   })
+        context = {'form': form,
+                   'reports': reports,
+                   'vlat': request.session['lat'],
+                   'vlon': request.session['lon'],
+                   'view': '18',
+                   'drag': 'true'
+                   }
+        return render(request, 'pages/add_report.html', context)
+
 
 def log_location(request):
-    loc = json.loads(request.body)
-    request.session['lat'] = loc['lat']
-    request.session['lon'] = loc['lon']
-    return HttpResponse(request)
+    """Log User Location from Browser Geolocation in Session."""
+    if request.method == "POST":
+        loc = json.loads(request.body)
+        request.session['lat'] = round(loc['lat'], 7)
+        request.session['lon'] = round(loc['lon'], 7)
+        return HttpResponse(request)
+    else:
+        return redirect('/')
 
 @login_required
 def edit(request, id):
@@ -94,7 +101,8 @@ def edit(request, id):
                 messages.error(request, 'Form Validation Error at the server')
                 return redirect('/')
         else:
-            messages.error(request, 'Could not confirm if this record was filed by the current user.')
+            messages.error(request, 'Could not confirm if this record was filed \
+                                     by the current user.')
             return redirect('/')
 
     form = ReportForm(instance=report)
@@ -104,11 +112,13 @@ def edit(request, id):
 
     return render(request, 'pages/add_report.html', context)
 
+
 def list_view(request):
     context = {
     }
 
     return render(request, 'pages/about.html', context)
+
 
 @login_required
 def delete(request, id):
@@ -116,3 +126,19 @@ def delete(request, id):
     }
 
     return render(request, 'pages/about.html', context)
+
+
+def address(request):
+    """Return lat/lon for input address via json fetch."""
+    if request.method == "POST":
+        print(request.body.decode('utf-8'))
+        address = '{address}, {city}, {state} {zip}'.format(
+            **json.loads(request.body.decode('utf-8')))
+        geolocator = MapBox(api_key=os.getenv('MB_TOKEN'))
+        location = geolocator.geocode(address)
+        new_loc = {'lat_position': location.latitude,
+                   'lon_position': location.longitude,
+                   }
+        return JsonResponse(new_loc)
+    else:
+        return redirect('/')
