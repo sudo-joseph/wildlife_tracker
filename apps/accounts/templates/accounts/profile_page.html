@@ -20,26 +20,30 @@
     </div>
 
     <div class="col-md-9">
-        <h1>User Report</h1>
-        <div class="listview">
+        <div>
+            <h1>User Report</h1>
+        </div>
+        <div class="row">
             {% for report in reports %}
             <div class="row main">
             <div class="media">
-                    {% if is_viewing_self %}
-                    <div>
-                    <form action="{% url 'core:edit' report.id %}" method="GET">
-                        <button type="submit" class="btn btn-info" >Edit</button>
-                    </form>
-                    <form action="#">
-                    <button type="button" class="btn btn-danger">Delete</button>
-                    </form>
-                    </div>
-                    {% endif %}
-                {% if report.image %}
-                <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.type }}">
-                {% else %}
-                <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+                {% if is_viewing_self %}
+                <div class="mr-1">
+                <form action="{% url 'core:edit' report.id %}" method="GET">
+                    <button type="submit" class="btn btn-info" >Edit</button>
+                </form>
+                <form action="#">
+                <button type="button" class="btn btn-danger">Delete</button>
+                </form>
+                </div>
                 {% endif %}
+                <div class="mr-2">
+                {% if report.image %}
+                    <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.type }}">
+                {% else %}
+                    <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+                {% endif %}
+                </div>
                 <div class="media-body">
                     <div>
                     <h4>{{ report.type }}</h4>
