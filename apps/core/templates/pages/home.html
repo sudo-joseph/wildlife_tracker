@@ -43,15 +43,12 @@ sfbaWildlifeTracker - Home
 </div>
 
 <script>
-
   //Get user location
-
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(postPosition);
     } else {
       x.innerHTML = "Geolocation is not supported by this browser.";
-      // TODO: replace this with code to call alternative location reporting method.
     }
   }
 
