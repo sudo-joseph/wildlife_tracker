@@ -10,17 +10,95 @@ sfbaWildlifeTracker - New Report
 {% block content %}
 <h1>Add report</h1>
 <div class="row">
-<div class="col-sm">
-<form method="POST"  enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-<button type="submit">Submit</button>
-</form>
+  <div class="col-sm">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <div class="col-sm">
+    <h4>Confirm Location:</h4>
+    {% include "snippets/map.html" %}
+    <!-- We could possibly move this to a snippet if we need to reuse for something -->
+    <h4>Incorrect location?</h4>
+    <h5>Update location by dragging pin or entering address below:</h5>
+        <div class="form">
+          <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputCity">City</label>
+              <input type="text" class="form-control" id="inputCity">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">State</label>
+              <select id="inputState" class="form-control">
+                <option selected>Choose...</option>
+                <option>CA</option>
+                <option>OR</option>
+                <!-- {% for state in states %}
+                <option> {{state}}</option>
+                {% endfor %} -->
+              </select>
+            </div>
+            <div class="form-group col-md-2">
+              <label for="inputZip">Zip</label>
+              <input type="text" class="form-control" id="inputZip">
+            </div>
+           <div class="form-group col-md-2">
+             <label></label>
+             <button onclick="sendAddress()" class="btn btn-primary">Update</button>
+           </div>
+          </div>
+        </div>
+  </div>
 </div>
-   <div class="col-sm">
-  <h4>Confirm Location:</h4>
-  {% include "snippets/map.html" %}
-   </div>
-</div>
+
+<script>
+  function sendAddress() {
+
+    //Get form input
+    var address = document.getElementById("inputAddress").value;
+    var city = document.getElementById("inputCity").value;
+    var state = document.getElementById("inputState").value;
+    var zip = document.getElementById("inputZip").value;
+
+    var address_json = {'address': address,
+                        'city':city,
+                        'state':state,
+                        'zip':zip,
+                       };
+
+    let url = '/address/';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "X-CSRFToken": '{{ csrf_token }}',
+        },
+        body: JSON.stringify(address_json) // body data type must match "Content-Type" header
+      })
+      .then(response => response.json()) // uncomment this to enable json
+      .then(data => {
+        console.log('getting data back');
+        console.log(data);
+
+        var newLatLng = new L.LatLng(data.lat_position, data.lon_position);
+        marker.setLatLng(newLatLng);
+        mymap.flyTo(newLatLng, 16);
+        document.getElementById("id_lat_position").value = strip(newLatLng.lat);
+        document.getElementById("id_lon_position").value = strip(newLatLng.lng);
+      })
+
+      //Reset Form
+      document.getElementById("inputAddress").innerHTML = '';
+      document.getElementById("inputCity").innerHTML = '';
+      document.getElementById("inputZip").innerHTML = '';
+
+  }
+</script>
 
 {% endblock content %}
