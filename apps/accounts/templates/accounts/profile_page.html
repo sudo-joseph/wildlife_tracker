@@ -30,9 +30,8 @@
                     <form action="{% url 'core:edit' report.id %}" method="GET">
                         <button type="submit" class="btn btn-info" >Edit</button>
                     </form>
-                    <form action="#">
                     <form action="{% url 'core:delete' report.id %}" method="GET">
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                     </div>
                     {% endif %}
