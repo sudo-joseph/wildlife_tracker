@@ -11,8 +11,8 @@ sfbaWildlifeTracker - Login Required
 <p>Currently we require a user login to report an incident.</p>
 <p>If you do not have a user account yet, please sign up first.</p>
       <h3>
-      <a href="{% url 'login' %}">Log In</a>, 
-      <a href="{% url 'signup' %}">Sign Up</a>, or, 
-      <a href="{% url 'home' %}">Back to Home</a>
+      <a href="{% url 'account:login' %}">Log In</a>, 
+      <a href="{% url 'account:signup' %}">Sign Up</a>, or, 
+      <a href="{% url 'core:home' %}">Back to Home</a>
       </h3>
 {% endblock content %}
