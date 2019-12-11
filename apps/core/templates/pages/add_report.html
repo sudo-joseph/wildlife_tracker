@@ -50,7 +50,7 @@ sfbaWildlifeTracker - New Report
             </div>
            <div class="form-group col-md-2">
              <label></label>
-             <button onclick="sendAddress()">Click me</button>
+             <button onclick="sendAddress()">Update</button>
              <!-- <button onsubmit="sendAddress()" class="btn btn-primary">Update</button> -->
            </div>
           </div>
@@ -90,6 +90,8 @@ sfbaWildlifeTracker - New Report
         var newLatLng = new L.LatLng(data.lat_position, data.lon_position);
         marker.setLatLng(newLatLng);
         mymap.flyTo(newLatLng, 16);
+        document.getElementById("id_lat_position").value = strip(newLatLng.lat);
+        document.getElementById("id_lon_position").value = strip(newLatLng.lng);
       })
 
       //Reset Form
