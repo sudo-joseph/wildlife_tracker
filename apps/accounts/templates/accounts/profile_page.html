@@ -32,8 +32,9 @@
                 <form action="{% url 'core:edit' report.id %}" method="GET">
                     <button type="submit" class="btn btn-info" >Edit</button>
                 </form>
-                <form action="#">
-                <button type="button" class="btn btn-danger">Delete</button>
+                <form action="{% url 'core:delete' report.id %}" onclick="return confirm('Are you sure you want to delete?')" \
+                method="GET">
+                <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
                 </div>
                 {% endif %}
