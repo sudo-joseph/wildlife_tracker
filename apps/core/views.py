@@ -122,6 +122,13 @@ def list_view(request):
 
 @login_required
 def delete(request, id):
+    """
+    Delete an incident report
+    """
+    
+    report = Report.objects.get(id=id)
+    report.delete() 
+    
     context = {
     }
 
