@@ -129,8 +129,7 @@ def delete(request, id):
     report = Report.objects.get(id=id)
     report.delete() 
     
-    context = {
-    }
+    return redirect('/account/users/' + request.user.username)
 
     return render(request, 'pages/about.html', context)
 
