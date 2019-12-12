@@ -7,3 +7,4 @@ DEBUG = False
 import django_heroku
 django_heroku.settings(locals())
 
+ALLOWED_HOSTS += [ 'sfba-wlt.herokuapp.com' ]
