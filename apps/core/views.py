@@ -122,16 +122,13 @@ def list_view(request):
 
 @login_required
 def delete(request, id):
-    """
-    Delete an incident report
-    """
-    
     report = Report.objects.get(id=id)
     report.delete() 
+    messages.warning(request, f"Deleted the report of \'{report.type}\'") 
     
     return redirect('/account/users/' + request.user.username)
 
-    return render(request, 'pages/about.html', context)
+    
 
 
 def address(request):
