@@ -8,6 +8,12 @@ import json
 from geopy.geocoders import MapBox
 import os
 
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
+                message_constants.INFO: 'info',
+                message_constants.SUCCESS: 'success',
+                message_constants.WARNING: 'warning',
+                message_constants.ERROR: 'danger',}
 
 class ReportForm(forms.ModelForm):
     class Meta:
@@ -91,18 +97,18 @@ def log_location(request):
 def edit(request, id):
     report = Report.objects.get(id=id)
 
+    if report.user == request.user:
+        messages.error(request, 'Could not confirm if this record was filed \
+                                    by the current user.')
+        return redirect('/')
+
     if request.method == "POST":
-        if report.user == request.user:
-            form = ReportForm(request.POST, request.FILES, instance=report)
-            if form.is_valid():
-                form.save()
-                return redirect('/account/users/' + request.user.username)
-            else:
-                messages.error(request, 'Form Validation Error at the server')
-                return redirect('/')
+        form = ReportForm(request.POST, request.FILES, instance=report)
+        if form.is_valid():
+            form.save()
+            return redirect('/account/users/' + request.user.username)
         else:
-            messages.error(request, 'Could not confirm if this record was filed \
-                                     by the current user.')
+            messages.error(request, 'Form Validation Error at the server')
             return redirect('/')
 
     form = ReportForm(instance=report)
@@ -116,16 +122,17 @@ def edit(request, id):
 def list_view(request):
     context = {
     }
-
+    
     return render(request, 'pages/about.html', context)
 
 
 @login_required
 def delete(request, id):
-    context = {
-    }
+    report = Report.objects.get(id=id)
+    report.delete() 
+    messages.warning(request, f"Deleted the report of \'{report.type}\'")
 
-    return render(request, 'pages/about.html', context)
+    return redirect('/account/users/' + request.user.username)
 
 
 def address(request):
