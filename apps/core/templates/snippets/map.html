@@ -4,13 +4,17 @@
 
   <script>
     // Define Map:
-    var mymap = L.map('mapid').setView([{{vlat}}, {{vlon}}], {{view}})
+    var mymap = L.map('mapid',{zoomControl: true}).setView([{{vlat}}, {{vlon}}], {{view}})
+     mymap.zoomControl.setPosition('topright');
     // Define Map Points:
     {% for report in reports %}
-    var marker = L.marker([{{report.lat_position}}, {{report.lon_position}}],{draggable:{{drag}}}).addTo(mymap);
-    {% if report.type != '' %}
-      marker.bindPopup("<b>{{ report.type }}</b>");
-    {% endif %}
+      var marker_{{forloop.counter}} = L.marker([{{report.lat_position}}, {{report.lon_position}}],{draggable:{{drag}}}).addTo(mymap);
+      {% if drag == 'true' %}
+          marker_{{forloop.counter}}.on('dragend', updateform);
+      {% endif %}
+      {% if report.type != '' %}
+        marker_{{forloop.counter}}.bindPopup("<b>{{ report.type }}</b>");
+      {% endif %}
     {% endfor %}
 
     // Define base tiles. (Mapbox)
@@ -28,7 +32,6 @@
         document.getElementById("id_lon_position").value = strip(latlng.lng);
     }
 
-    marker.on('dragend', updateform);
 
     function strip(x) {
       return Number.parseFloat(x).toFixed(7);

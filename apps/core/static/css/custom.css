@@ -13,6 +13,7 @@ a:hover {
 
 .navbar {
   background: linear-gradient(135deg, #f5a04c 0%, #fdf1d6 100%);
+  height:10%
 }
 
 .card-user {
@@ -38,8 +39,9 @@ a:hover {
 }
 
 .listview {
-  height: 550px;
-  overflow: auto;
+  direction:rtl;
+  max-height: 70vh;
+  overflow: scroll;
 }
 .media-image {
   height: 120px;
@@ -47,8 +49,9 @@ a:hover {
 
 #mapid {
   /* height: 100%; */
-  height: 560px;
-  width: 100%;
+  height: 100%;
+  width: 98%;
+  position: absolute;
 }
 
 .about-image {
@@ -94,4 +97,19 @@ div.listview img.media-image {
 
 .no-image {
   height: 90px;
+}
+
+.report_button_row {
+  height:10vh;
+  margin:auto;
+}
+
+.report-button {
+  position:absolute;
+  width: 100%:
+}
+
+.button-color {
+  background-color: #ff0000;
+  border-color: #ff0000;
 }
