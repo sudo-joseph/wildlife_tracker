@@ -47,11 +47,18 @@ a:hover {
   height: 120px;
 }
 
-#mapid {
-  /* height: 100%; */
+#mapid_main {
   height: 100%;
-  width: 98%;
+  width: 98.9%;
   position: absolute;
+  margin-left: -1.5rem
+}
+
+
+#mapid_report {
+  height: 25rem;
+  width: 100%;
+  position:static;
 }
 
 .about-image {
@@ -112,4 +119,13 @@ div.listview img.media-image {
 .button-color {
   background-color: #ff0000;
   border-color: #ff0000;
+}
+
+.update_map_btn {
+  height:85%
+}
+
+.submit_button {
+  margin-:2rem;
+  padding-bottom: 2rem;
 }

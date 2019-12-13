@@ -12,7 +12,14 @@ import os
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
+        fields = ['summary',
+                  'animal_type',
+                  # 'sighting_time', TODO Implement time input.
+                  'lat_position',
+                  'lon_position',
+                  'detailed_description',
+                  'image',
+                  ]
         widgets = {'text': forms.Textarea()}
 
 
@@ -27,6 +34,7 @@ def home(request):
                'vlon': loc_oakland['lon_position'],
                'view': map_zoom_level,
                'drag': 'false',
+               'page': 'main',
                'reports': reports,
                }
 
@@ -72,7 +80,8 @@ def add_new(request):
                    'vlat': request.session['lat'],
                    'vlon': request.session['lon'],
                    'view': '18',
-                   'drag': 'true'
+                   'drag': 'true',
+                   'page': 'report',
                    }
         return render(request, 'pages/add_report.html', context)
 
@@ -123,12 +132,12 @@ def list_view(request):
 @login_required
 def delete(request, id):
     report = Report.objects.get(id=id)
-    report.delete() 
-    messages.warning(request, f"Deleted the report of \'{report.type}\'") 
-    
+    report.delete()
+    messages.warning(request, f"Deleted the report of \'{report.type}\'")
+
     return redirect('/account/users/' + request.user.username)
 
-    
+
 
 
 def address(request):

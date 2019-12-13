@@ -1,10 +1,10 @@
-  <div id="mapid"></div>
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <script>
     // Define Map:
-    var mymap = L.map('mapid',{zoomControl: true}).setView([{{vlat}}, {{vlon}}], {{view}})
+    var mymap = L.map('mapid_{{page}}',{zoomControl: true}).setView([{{vlat}}, {{vlon}}], {{view}})
      mymap.zoomControl.setPosition('topright');
     // Define Map Points:
     {% for report in reports %}
@@ -13,7 +13,7 @@
           marker_{{forloop.counter}}.on('dragend', updateform);
       {% endif %}
       {% if report.type != '' %}
-        marker_{{forloop.counter}}.bindPopup("<b>{{ report.type }}</b>");
+        marker_{{forloop.counter}}.bindPopup("<b>{{ report.summary }}</b>");
       {% endif %}
     {% endfor %}
 
