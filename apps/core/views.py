@@ -117,9 +117,14 @@ def edit(request, id):
             return redirect('/')
 
     form = ReportForm(instance=report)
-    context = {
-        'form': form,
-    }
+    context = {'form': form,
+               'reports': [report],
+               'vlat': report.lat_position,
+               'vlon': report.lon_position,
+               'view': '15',
+               'drag': 'true',
+               'page': 'report',
+               }
 
     return render(request, 'pages/add_report.html', context)
 
