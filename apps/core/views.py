@@ -7,7 +7,8 @@ from .models import Report
 import json
 from geopy.geocoders import MapBox
 import os
-
+import pytz
+from django.utils import timezone
 
 
 class ReportForm(forms.ModelForm):

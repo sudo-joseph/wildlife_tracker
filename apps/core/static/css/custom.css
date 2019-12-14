@@ -8,12 +8,12 @@ a:hover {
 }
 
 a:hover {
-    color: #4cc505;
+  color: #4cc505;
 }
 
 .navbar {
   background: linear-gradient(135deg, #f5a04c 0%, #fdf1d6 100%);
-  height:10%
+  height: 10%
 }
 
 .card-user {
@@ -39,10 +39,15 @@ a:hover {
 }
 
 .listview {
-  direction:rtl;
+  direction: rtl;
   max-height: 70vh;
   overflow: scroll;
 }
+
+.listview>div {
+  direction: ltr;
+}
+
 .media-image {
   height: 120px;
 }
@@ -54,11 +59,10 @@ a:hover {
   margin-left: -1.5rem
 }
 
-
 #mapid_report {
   height: 25rem;
   width: 100%;
-  position:static;
+  position: static;
 }
 
 .about-image {
@@ -73,31 +77,33 @@ a:hover {
   margin: right;
 }
 
-.bs-example  {
-	border: 2px solid white;
-	background: #f5f5f5;
-	/* text-align: center; */
-	padding-top: 8px;
-	padding-bottom: 8px;
+.bs-example {
+  border: 2px solid white;
+  background: #f5f5f5;
+  /* text-align: center; */
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
-div.listview > div {
+/* div.listview > div {
   margin-top: 0px;
-}
-
+} */
 div.listview img.media-image {
   margin: 0px 5px 5px 0px;
 }
+
 .report_title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 18px;
   font-weight: bold;
 }
+
 .report_date {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 13px;
   font-weight: bold;
 }
+
 .report_text {
   font-family: 'Times New Roman', Times, serif;
 }
@@ -107,12 +113,12 @@ div.listview img.media-image {
 }
 
 .report_button_row {
-  height:10vh;
-  margin:auto;
+  height: 10vh;
+  margin: auto;
 }
 
 .report-button {
-  position:absolute;
+  position: absolute;
   width: 100%:
 }
 
@@ -122,10 +128,16 @@ div.listview img.media-image {
 }
 
 .update_map_btn {
-  height:85%
+  height: 85%
 }
 
 .submit_button {
-  margin-:2rem;
+  margin-: 2rem;
   padding-bottom: 2rem;
+}
+
+.card {
+  height: 12.5rem;
+  width: 100%;
+  margin-bottom: 2px;
 }

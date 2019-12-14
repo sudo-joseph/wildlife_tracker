@@ -5,7 +5,7 @@ sfbaWildlifeTracker - Home
 {% endblock title %}
 
 {% load static %}
-
+{% load tz %}
 {% block content %}
 <div class="container-fluid fill">
   <div class="row">
@@ -19,18 +19,44 @@ sfbaWildlifeTracker - Home
 
       <div class="row bs-example">
         <div class="col listview">
+
           {% for report in reports %}
-          {% if forloop.first %} {% else %}
-          <hr> {% endif %}
-          <div>
-            <div class="report_title"><a id="marker_{{forloop.counter}}" href="#" onclick="marker_{{forloop.counter}}.openPopup();">{{report.summary|truncatechars:100}}</a></div>
-            {% if report.image %}
-            <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.summary }}">
-            {% else %}
-            <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
-            {% endif %}
-            <div class="report_date">{{ report.created }}</div>
-            <div class="report_text">{{ report.detailed_description }}</div>
+          <div class="row ">
+            <div class="col">
+              <div class="card mt-20">
+                <div class="row">
+                  <div class="col">
+                    <div class="report_title"><a id="marker_{{forloop.counter}}" href="#" onclick="marker_{{forloop.counter}}.openPopup();">
+                        <h4>{{report.summary|truncatechars:35}}</h4>
+                      </a></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="report_date">{{ report.created|timezone:"US/Pacific"  }}</div>
+                    <div class="report_text">{{ report.detailed_description|truncatechars:100}}</div>
+                  </div>
+                  <div class="col">
+                    {% if report.image %}
+                    <img class="mr-3 media-image img-thumbnail" src="{{ report.image.url }}" alt="{{ report.summary }}">
+                    {% else %}
+                    <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+                    {% endif %}
+                  </div>
+                </div>
+
+
+
+                <!-- <div class="report_title"><a id="marker_{{forloop.counter}}" href="#" onclick="marker_{{forloop.counter}}.openPopup();">{{report.summary|truncatechars:100}}</a></div>
+                {% if report.image %}
+                <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.summary }}">
+                {% else %}
+                <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+                {% endif %}
+                <div class="report_date">{{ report.created }}</div>
+                <div class="report_text">{{ report.detailed_description }}</div> -->
+              </div>
+            </div>
           </div>
           {% endfor %}
         </div>
@@ -43,11 +69,11 @@ sfbaWildlifeTracker - Home
         </div>
       </div>
 
+    </div>
+    <div class="col-9 mapcol">
+      <div id="mapid_{{page}}"></div>
+    </div>
   </div>
-  <div class="col-9 mapcol">
-    <div id="mapid_{{page}}"></div>
-  </div>
-</div>
 </div>
 {% include "snippets/map.html" %}
 <script>
