@@ -2,100 +2,84 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>
-        {% block title %}
-            My Site
-        {% endblock title %}
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>
+    {% block title %}
+    My Site
+    {% endblock title %}
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
 
-    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/signinform.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/signinform.css' %}" rel="stylesheet">
 
-    <!-- Add your custom CSS to this file -->
-    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-    <!-- Bootstrap CSS -->
+  <!-- Add your custom CSS to this file -->
+  <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
-  </head>
+</head>
+
 <body>
-<nav class="navbar navbar-expand-md">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <img style="width: 60px; border-radius: 25%;" src="{% static 'images/paw.png' %}" />
-        </a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">
-                ☰
-            </span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link nav-link-color" href="{% url 'core:home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-color" href="{% url 'core:about' %}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-color" href="{% url 'account:view_all_users' %}">Users</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-color" href="{% url 'account:logout' %}" >Sign Out</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-color" href="{% url 'account:view_profile' request.user %}" >
-                            {{ request.user }}
-                            <img src="{{ user.gravatar }}" class="navbar-avatar" />
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:signup' %}">Sign up</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-</div>
+  <nav class="navbar navbar-expand-md">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img style="width: 60px; border-radius: 25%;" src="{% static 'images/paw.png' %}" />
+      </a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">
+          ☰
+        </span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link nav-link-color" href="{% url 'core:home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-color" href="{% url 'core:about' %}">About</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link nav-link-color" href="{% url 'account:view_profile' request.user %}">
+              <img src="{{ user.gravatar }}" class="navbar-avatar" />
+              {{ request.user }}
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link nav-link-color" href="{% url 'account:logout' %}">Sign Out</a>
+          </li>
 
-
-
-{% block main %}
-    <div class="container pt-2">
-
-      {# Enable Django's "messages" system #}
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-          {% endfor %}
-      {% endif %}
-
-      {% block content %}
-        <p>Use this as a way to quick start any new project.</p>
-      {% endblock content %}
-
+          {% else %}
+          <li class="nav-item">
+            <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:signup' %}">Sign up</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-{% endblock main %}
+  </nav>
 
+  {% block content %}
+  {% endblock content %}
 
-      <script src="{% static 'js/bootstrap/jquery-3.4.1.min.js' %}"></script>
-      <script src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
-  </body>
+  <script src="{% static 'js/bootstrap/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
+</body>
+
 </html>
-

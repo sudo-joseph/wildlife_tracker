@@ -7,13 +7,22 @@ from .models import Report
 import json
 from geopy.geocoders import MapBox
 import os
+import pytz
+from django.utils import timezone
 
 
 
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
+        fields = ['summary',
+                  'animal_type',
+                  # 'sighting_time', TODO Implement time input.
+                  'lat_position',
+                  'lon_position',
+                  'detailed_description',
+                  'image',
+                  ]
         widgets = {'text': forms.Textarea()}
 
 
@@ -28,6 +37,7 @@ def home(request):
                'vlon': loc_oakland['lon_position'],
                'view': map_zoom_level,
                'drag': 'false',
+               'page': 'main',
                'reports': reports,
                }
 
@@ -72,8 +82,9 @@ def add_new(request):
                    'reports': reports,
                    'vlat': request.session['lat'],
                    'vlon': request.session['lon'],
-                   'view': '18',
-                   'drag': 'true'
+                   'view': '16',
+                   'drag': 'true',
+                   'page': 'report',
                    }
         return render(request, 'pages/add_report.html', context)
 
@@ -108,9 +119,14 @@ def edit(request, id):
             return redirect('/')
 
     form = ReportForm(instance=report)
-    context = {
-        'form': form,
-    }
+    context = {'form': form,
+               'reports': [report],
+               'vlat': report.lat_position,
+               'vlon': report.lon_position,
+               'view': '16',
+               'drag': 'true',
+               'page': 'report',
+               }
 
     return render(request, 'pages/add_report.html', context)
 
@@ -131,8 +147,8 @@ def delete(request, id):
                                     by the current user.')
         return redirect('/')
 
-    report.delete() 
-    messages.warning(request, f"Deleted the report of \'{report.type}\'")
+    report.delete()
+    messages.warning(request, f"Deleted the report of \'{report.summary}\'")
 
     return redirect('/account/users/' + request.user.username)
 

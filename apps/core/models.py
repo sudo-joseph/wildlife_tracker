@@ -12,10 +12,27 @@ class Report(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    type = models.CharField(max_length=30)
+    summary = models.CharField(max_length=100)
+
+    animals = (('BEAR', 'Bear'),
+               ('BOBCAT', 'Bobcat'),
+               ('CAT', 'Cat'),
+               ('COYOTEE', 'Coyotee'),
+               ('DEER', 'Deer'),
+               ('EAGLE', 'Eagle'),
+               ('EL CHUPACABRA', 'El Chupacabra'),
+               ('MOUNTAIN LION', 'Mountain Lion'),
+               ('WOLF', 'Wolf'),
+               ('OTHER', 'Other'))
+
+    animal_type = models.CharField(max_length=20,
+                                   choices=animals,
+                                   default='COYOTEE',
+                                   )
     lat_position = models.DecimalField(max_digits=10, decimal_places=7)
     lon_position = models.DecimalField(max_digits=10, decimal_places=7)
-    text = models.CharField(max_length=160)
+    detailed_description = models.TextField(max_length=1000)
+    # sighting_time = models.DateTimeField(auto_now_add=False)
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     image = models.FileField(upload_to='submitted_images/',
@@ -26,3 +43,4 @@ class Report(models.Model):
 @receiver(post_delete, sender=Report)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(False) 
+

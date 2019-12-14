@@ -5,43 +5,66 @@ sfbaWildlifeTracker - Home
 {% endblock title %}
 
 {% load static %}
-
+{% load tz %}
 {% block content %}
-<div>
+<div class="container-fluid fill">
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-3 pagecol">
+
       <div class="row bs-example report-list-title">
-        <h3>Incident Reports</h3>
-        <button class="btn btn-primary ml-auto"
-        onclick="window.location.href=/add-new/">New Report</button>
-      </div>
-      <div class="row bs-example">
-        <div class="listview">
-        {% for report in reports %}
-        {% if forloop.first %} {% else %} <hr> {% endif %}
-
-        <div>
-           {% if report.image %}
-            <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.type }}">
-           {% else %}
-            <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
-           {% endif %}
-            <div class="report_title">{{ report.type }}</div>
-            <div class="report_date">{{ report.created }}</div>
-            <div class="report_text">{{ report.text }}</div>
-         </div>
-        {% endfor %}
+        <div class="col ">
+          <h3>Recent Reports:</h3>
         </div>
-
       </div>
-    </div>
-    <div class="col-8">
 
-      {% include "snippets/map.html" %}
+      <div class="row bs-example">
+        <div class="col listview">
+
+          {% for report in reports %}
+          <div class="row ">
+            <div class="col">
+              <div class="card main_card mt-20">
+                <div class="row">
+                  <div class="col">
+                    <div class="report_title"><a id="marker_{{forloop.counter}}" href="#" onclick="marker_{{forloop.counter}}.openPopup();">
+                        <h4>{{report.summary|truncatechars:35}}</h4>
+                      </a></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="report_date">{{ report.created|timezone:"US/Pacific"  }}</div>
+                    <div class="report_text">{{ report.detailed_description|truncatechars:100}}</div>
+                  </div>
+                  <div class="col">
+                    {% if report.image %}
+                    <img class="mr-3 media-image img-thumbnail" src="{{ report.image.url }}" alt="{{ report.summary }}">
+                    {% else %}
+                    <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="report_button_row">
+            <button class="btn btn-primary btn-block btn-lg w-100 h-100" onclick="window.location.href=/add-new/">New Report</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-9 mapcol">
+      <div id="mapid_{{page}}"></div>
     </div>
   </div>
 </div>
-
+{% include "snippets/map.html" %}
 <script>
   //Get user location
   function getLocation() {
@@ -54,8 +77,10 @@ sfbaWildlifeTracker - Home
 
   //Send location to server
   function postPosition(position) {
-    var latlon = {'lat': position.coords.latitude,
-                  'lon': position.coords.longitude};
+    var latlon = {
+      'lat': position.coords.latitude,
+      'lon': position.coords.longitude
+    };
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/log_location/", true);
@@ -63,14 +88,8 @@ sfbaWildlifeTracker - Home
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(latlon));
   }
+
+  getLocation()
 </script>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-
 
 {% endblock content %}
