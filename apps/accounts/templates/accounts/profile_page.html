@@ -1,63 +1,69 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    @{{ user.username }}
+@{{ user.username }}
 {% endblock title %}
+{% load tz %}
 
 {% load static %}
 {% block content %}
-<div class="row">
-    <div class="col-md-3">
-        <img src="{{ user.gravatar }}" />
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-2" style="height:100vh;">
+      <div class="profile">
         <h3>@{{ user.username }}</h3>
+        <img class="img-fluid prof_img" src="{{ user.gravatar }}" />
         <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
         <p>{{ user.bio }}</p>
-
         {% if is_viewing_self %}
-            <a href="{% url 'account:edit_profile' %}">Edit</a>
+        <a href="{% url 'account:edit_profile' %}">Edit</a>
         {% endif %}
+      </div>
     </div>
-
-    <div class="col-md-9">
-        <div>
-            <h1>User Report</h1>
+    <div class="col-md-10">
+      {% for report in reports %}
+      <div class="card user_report_card">
+        <div class="row">
+          <div class="col">
+            <h4>{{report.summary}}</h4>
+          </div>
         </div>
         <div class="row">
-            {% for report in reports %}
-            <div class="row main">
-            <div class="media">
-                {% if is_viewing_self %}
-                <div class="mr-1">
-                <form action="{% url 'core:edit' report.id %}" method="GET">
-                    <button type="submit" class="btn btn-info" >Edit</button>
-                </form>
-                <form action="{% url 'core:delete' report.id %}" onclick="return confirm('Are you sure you want to delete?')" \
-                method="GET">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-                </div>
-                {% endif %}
-                <div class="mr-2">
-                {% if report.image %}
-                    <img class="mr-3 media-image" src="{{ report.image.url }}" alt="{{ report.type }}">
-                {% else %}
-                    <img class="mr-3 media-image no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
-                {% endif %}
-                </div>
-                <div class="media-body">
-                    <div>
-                    <h4>{{ report.type }}</h4>
-                    </div>
-                    <h5>{{ report.created }}</h5>
-                    <p>{{ report.text }}</p>
-                </div>
+          <div class="col-4">
+            {% if report.image %}
+            <img class="img-thumbnail" src="{{ report.image.url }}" alt="{{ report.summary }}">
+            {% else %}
+            <img class="img-thumbnail no-image" src="{% static 'images/noImageAvailable.png' %}" alt="(No image available)">
+            {% endif %}
+          </div>
+          <div class="col-8">
+            <div class="row">
+              <div class="col">
+                <div class="report_date">{{ report.created|timezone:"US/Pacific"  }}</div>
+                <div class="report_text">{{ report.detailed_description}}</div>
+              </div>
             </div>
-            </div>
-            {% if loop.last == False %}  <hr/> {% endif %}
-            {% endfor %}
+          </div>
         </div>
+        <div class="row" style="margin-bottom:5px;">
+          <div class="col-9">
+          </div>
+          <div class="col-1">
+            <form action="{% url 'core:edit' report.id %}" method="GET">
+              <button type="submit" class="btn btn-info">Edit</button>
+            </form>
+          </div>
+          <div class="col-1">
+            <form action="{% url 'core:delete' report.id %}" onclick="return confirm('Are you sure you want to delete?')" \ method="GET">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
+  </div>
 </div>
-{% endblock %}
 
+
+{% endblock %}
