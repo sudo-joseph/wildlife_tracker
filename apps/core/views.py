@@ -11,6 +11,7 @@ import pytz
 from django.utils import timezone
 
 
+
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
@@ -133,7 +134,7 @@ def edit(request, id):
 def list_view(request):
     context = {
     }
-
+    
     return render(request, 'pages/about.html', context)
 
 

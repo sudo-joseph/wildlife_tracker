@@ -39,6 +39,8 @@ class Report(models.Model):
                              null=True,
                              blank=True)
 
+
 @receiver(post_delete, sender=Report)
 def submission_delete(sender, instance, **kwargs):
-    instance.image.delete(False)
+    instance.image.delete(False) 
+

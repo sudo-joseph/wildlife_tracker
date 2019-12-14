@@ -13,7 +13,6 @@ django-crispy-forms = "*"
 geopy = "*"
 boto3 = "*"
 django-storages = "*"
-pytz = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"
