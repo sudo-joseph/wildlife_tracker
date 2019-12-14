@@ -8,8 +8,6 @@ Living in an urban environment can make one forget how closely related we are to
 
 The SfBayWildlifeTracker represents a collaboration by Kickstart Coding students Masa Yana, Joseph Reid, and Mathew Cubell. The purpose of this project was to create a fully functioning, web based application that incorporated the Frontend and Backend development concepts which were taught during the first eight weeks of a sixteen week Fullstack coding boot camp.
 
-
-
 ## Local Setup
 
 1. Clone Repo
@@ -41,6 +39,9 @@ python3 manage.py migrate
 python3 manage.py runserver
 ```
 Default address is `localhost:8000`
+
+## Production Setup
+Production deploy requires aws bucket to be configured for saving images.
 
 ## Dependencies
 ```
