@@ -52,14 +52,16 @@
         <ul class="navbar-nav ml-auto">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link nav-link-color" href="{% url 'account:logout' %}">Sign Out</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link nav-link-color" href="{% url 'account:view_profile' request.user %}">
-              {{ request.user }}
               <img src="{{ user.gravatar }}" class="navbar-avatar" />
+              {{ request.user }}
             </a>
           </li>
+          
+          <li class="nav-item">
+            <a class="nav-link nav-link-color" href="{% url 'account:logout' %}">Sign Out</a>
+          </li>
+
           {% else %}
           <li class="nav-item">
             <a id="log-in-link" class="nav-link nav-link-color" href="{% url 'account:login' %}">Log In</a>
