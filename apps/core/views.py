@@ -9,6 +9,7 @@ from geopy.geocoders import MapBox
 import os
 
 
+
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
@@ -100,18 +101,19 @@ def log_location(request):
 def edit(request, id):
     report = Report.objects.get(id=id)
 
+    if report.user != request.user:
+        messages.error(request, 'Could not confirm if this record was filed \
+                                    by the current user.')
+        return redirect('/')
+
     if request.method == "POST":
-        if report.user == request.user:
-            form = ReportForm(request.POST, request.FILES, instance=report)
-            if form.is_valid():
-                form.save()
-                return redirect('/account/users/' + request.user.username)
-            else:
-                messages.error(request, 'Form Validation Error at the server')
-                return redirect('/')
+        form = ReportForm(request.POST, request.FILES, instance=report)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Your update was saved!')
+            return redirect('/account/users/' + request.user.username)
         else:
-            messages.error(request, 'Could not confirm if this record was filed \
-                                     by the current user.')
+            messages.error(request, 'Form Validation Error at the server')
             return redirect('/')
 
     form = ReportForm(instance=report)
@@ -132,12 +134,16 @@ def list_view(request):
 @login_required
 def delete(request, id):
     report = Report.objects.get(id=id)
+
+    if report.user != request.user:
+        messages.error(request, 'Could not confirm if this record was filed \
+                                    by the current user.')
+        return redirect('/')
+
     report.delete()
     messages.warning(request, f"Deleted the report of \'{report.type}\'")
 
     return redirect('/account/users/' + request.user.username)
-
-
 
 
 def address(request):
