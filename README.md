@@ -40,8 +40,8 @@ python3 manage.py runserver
 ```
 Default address is `localhost:8000`
 
-## Production Setup
-Production deploy requires aws bucket to be configured for saving images.
+### Production Setup
+Same as local deployment but production deploy requires aws bucket to be configured for saving images in .env. Prod deploy uses PSQL for database. 
 
 ## Dependencies
 ```
