@@ -141,3 +141,11 @@ div.listview img.media-image {
   width: 100%;
   margin-bottom: 2px;
 }
+
+.user_report_card {
+  width: 100%;
+  margin: 2px;
+}
+.profile {
+  height:100vh;
+}
