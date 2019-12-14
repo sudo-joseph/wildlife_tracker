@@ -123,6 +123,12 @@ def list_view(request):
 @login_required
 def delete(request, id):
     report = Report.objects.get(id=id)
+
+    if report.user == request.user:
+        messages.error(request, 'Could not confirm if this record was filed \
+                                    by the current user.')
+        return redirect('/')
+
     report.delete() 
     messages.warning(request, f"Deleted the report of \'{report.type}\'") 
     
