@@ -141,7 +141,7 @@ def delete(request, id):
         return redirect('/')
 
     report.delete()
-    messages.warning(request, f"Deleted the report of \'{report.type}\'")
+    messages.warning(request, f"Deleted the report of \'{report.summary}\'")
 
     return redirect('/account/users/' + request.user.username)
 
