@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
 import os
+from django.contrib.messages import constants as message_constants
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.tz',
             ],
         },
     },
@@ -104,6 +106,8 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
+DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
+
 USE_I18N = True
 
 USE_L10N = True
@@ -125,5 +129,12 @@ LOGIN_URL = '/account/login/'
 # Specify we are using a custom user model
 AUTH_USER_MODEL = 'accounts.User'
 
-
+# Adding bootstrap form feature
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# To meet bootstrap class and django messages
+MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
+                message_constants.INFO: 'info',
+                message_constants.SUCCESS: 'success',
+                message_constants.WARNING: 'warning',
+                message_constants.ERROR: 'danger',}

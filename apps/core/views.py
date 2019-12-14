@@ -7,12 +7,22 @@ from .models import Report
 import json
 from geopy.geocoders import MapBox
 import os
+import pytz
+from django.utils import timezone
+
 
 
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = ['type', 'lat_position', 'lon_position', 'text', 'image']
+        fields = ['summary',
+                  'animal_type',
+                  # 'sighting_time', TODO Implement time input.
+                  'lat_position',
+                  'lon_position',
+                  'detailed_description',
+                  'image',
+                  ]
         widgets = {'text': forms.Textarea()}
 
 
@@ -27,17 +37,25 @@ def home(request):
                'vlon': loc_oakland['lon_position'],
                'view': map_zoom_level,
                'drag': 'false',
+               'page': 'main',
                'reports': reports,
                }
 
     return render(request, 'pages/home.html', context)
 
 
-def about(request):
-    context = {
-    }
+def about_page(request):
+    
+    if report.user == request.user:
+        messages.error(request, 'Could not confirm if this record was filed \
+                                    by the current user.')
+        return redirect('/')
 
-    return render(request, 'pages/about.html', context)
+    report.delete() 
+    messages.warning(request, f"Deleted the report of \'{report.type}\'") 
+    
+    return redirect('/account/users/' + request.user.username)
+   
 
 
 def add_new(request):
@@ -71,8 +89,9 @@ def add_new(request):
                    'reports': reports,
                    'vlat': request.session['lat'],
                    'vlon': request.session['lon'],
-                   'view': '18',
-                   'drag': 'true'
+                   'view': '16',
+                   'drag': 'true',
+                   'page': 'report',
                    }
         return render(request, 'pages/add_report.html', context)
 
@@ -91,24 +110,30 @@ def log_location(request):
 def edit(request, id):
     report = Report.objects.get(id=id)
 
+    if report.user != request.user:
+        messages.error(request, 'Could not confirm if this record was filed \
+                                    by the current user.')
+        return redirect('/')
+
     if request.method == "POST":
-        if report.user == request.user:
-            form = ReportForm(request.POST, request.FILES, instance=report)
-            if form.is_valid():
-                form.save()
-                return redirect('/account/users/' + request.user.username)
-            else:
-                messages.error(request, 'Form Validation Error at the server')
-                return redirect('/')
+        form = ReportForm(request.POST, request.FILES, instance=report)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Your update was saved!')
+            return redirect('/account/users/' + request.user.username)
         else:
-            messages.error(request, 'Could not confirm if this record was filed \
-                                     by the current user.')
+            messages.error(request, 'Form Validation Error at the server')
             return redirect('/')
 
     form = ReportForm(instance=report)
-    context = {
-        'form': form,
-    }
+    context = {'form': form,
+               'reports': [report],
+               'vlat': report.lat_position,
+               'vlon': report.lon_position,
+               'view': '16',
+               'drag': 'true',
+               'page': 'report',
+               }
 
     return render(request, 'pages/add_report.html', context)
 
@@ -116,7 +141,7 @@ def edit(request, id):
 def list_view(request):
     context = {
     }
-
+    
     return render(request, 'pages/about.html', context)
 
 
@@ -124,17 +149,16 @@ def list_view(request):
 def delete(request, id):
     report = Report.objects.get(id=id)
 
-    if report.user == request.user:
+
+    if report.user != request.user:
         messages.error(request, 'Could not confirm if this record was filed \
                                     by the current user.')
         return redirect('/')
 
-    report.delete() 
-    messages.warning(request, f"Deleted the report of \'{report.type}\'") 
-    
-    return redirect('/account/users/' + request.user.username)
+    report.delete()
+    messages.warning(request, f"Deleted the report of \'{report.summary}\'")
 
-    
+    return redirect('/account/users/' + request.user.username)
 
 
 def address(request):
