@@ -17,7 +17,7 @@ class Report(models.Model):
     animals = (('BEAR', 'Bear'),
                ('BOBCAT', 'Bobcat'),
                ('CAT', 'Cat'),
-               ('COYOTEE', 'Coyotee'),
+               ('COYOTE', 'Coyote'),
                ('DEER', 'Deer'),
                ('EAGLE', 'Eagle'),
                ('EL CHUPACABRA', 'El Chupacabra'),
@@ -42,5 +42,4 @@ class Report(models.Model):
 
 @receiver(post_delete, sender=Report)
 def submission_delete(sender, instance, **kwargs):
-    instance.image.delete(False) 
-
+    instance.image.delete(False)
