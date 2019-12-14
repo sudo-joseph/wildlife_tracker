@@ -12,7 +12,7 @@
       {% if drag == 'true' %}
           marker_{{forloop.counter}}.on('dragend', updateform);
       {% endif %}
-      {% if report.type != '' %}
+      {% if report.summary != '' %}
         marker_{{forloop.counter}}.bindPopup("<b>{{ report.summary }}</b>");
       {% endif %}
     {% endfor %}
