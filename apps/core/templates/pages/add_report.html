@@ -130,7 +130,7 @@ sfbaWildlifeTracker - New Report
 
           var newLatLng = new L.LatLng(data.lat_position, data.lon_position);
           marker_1.setLatLng(newLatLng);
-          mymap.flyTo(newLatLng, 16);
+          mymap.flyTo(newLatLng, {{view}});
           document.getElementById("id_lat_position").value = strip(newLatLng.lat);
           document.getElementById("id_lon_position").value = strip(newLatLng.lng);
         })

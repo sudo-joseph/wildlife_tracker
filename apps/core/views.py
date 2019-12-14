@@ -81,7 +81,7 @@ def add_new(request):
                    'reports': reports,
                    'vlat': request.session['lat'],
                    'vlon': request.session['lon'],
-                   'view': '18',
+                   'view': '16',
                    'drag': 'true',
                    'page': 'report',
                    }
@@ -122,7 +122,7 @@ def edit(request, id):
                'reports': [report],
                'vlat': report.lat_position,
                'vlon': report.lon_position,
-               'view': '15',
+               'view': '16',
                'drag': 'true',
                'page': 'report',
                }
