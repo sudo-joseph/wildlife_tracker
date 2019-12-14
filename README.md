@@ -29,7 +29,7 @@ pipenv shell
 3. Migrate
 
 ```
-python3 manage.py Migrate
+python3 manage.py migrate
 ```
 
 4. Run Server
